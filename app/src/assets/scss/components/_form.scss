@@ -90,11 +90,10 @@
 		// border-radius: _size(border-radius);
 		border: 0px; //solid _size(border-width) _palette(border);
 		color: inherit;
-		display: block;
+		// display: block;
 		outline: 0;
 		padding: 0 1rem;
 		text-decoration: none;
-		// max-width: 40%;
 		float: left;
 
 		&:invalid {

@@ -93,6 +93,8 @@
 		}
 
 		nav {
+			z-index: 3;
+
 			ul {
 				@include vendor('display', 'flex');
 				margin-bottom: 0;

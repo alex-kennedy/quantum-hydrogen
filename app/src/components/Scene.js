@@ -40,8 +40,11 @@ class ThreeScene extends Component{
         this.scene.add(this.cube)
 
         // CONTROLS
-        const controls = new OrbitControls(this.camera);
+        const controls = new OrbitControls(this.camera, document.getElementById('bg'));
         this.controls = controls;
+        this.controls.enablePan = false;
+        this.controls.enableKeys = false;
+        this.controls.enableDamping = true;
 
         this.start()
     }
@@ -84,7 +87,7 @@ class ThreeScene extends Component{
     render() {
         return(
             <div
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '100%', id: 'canvas' }}
                 ref={(mount) => { this.mount = mount }}
             />
         )
