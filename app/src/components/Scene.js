@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
+import QuantumState from '../components/QuantumState'
 
 var OrbitControls = require('three-orbit-controls')(THREE)
 
-class ThreeScene extends Component{
+class ThreeScene extends Component {
     constructor(props) {
         super(props)
         this.updateDimensions = this.updateDimensions.bind(this)
+        this.redrawQuantumState = this.redrawQuantumState.bind(this)
     }
 
     componentDidMount() {
@@ -47,6 +49,14 @@ class ThreeScene extends Component{
         this.controls.enableDamping = true;
 
         this.start()
+        
+        // Add quantum number event listeners
+        document.getElementById('n').addEventListener('input', this.waitToRedrawQuantumState);
+        document.getElementById('l').addEventListener('input', this.waitToRedrawQuantumState);
+        document.getElementById('m').addEventListener('input', this.waitToRedrawQuantumState);
+
+        // Quantum state and redraw timer
+        this.redrawTimer = 0;
     }
 
     componentWillUnmount() {
@@ -75,13 +85,23 @@ class ThreeScene extends Component{
         this.renderer.render(this.scene, this.camera)
     }
 
-    updateDimensions() {
+    updateDimensions = () => {
         const width = this.mount.clientWidth;
         const height = this.mount.clientHeight;
 
         this.renderer.setSize(width, height);
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
+    }
+
+    waitToRedrawQuantumState = () => {
+        clearTimeout(this.redrawTimer);
+        this.redrawTimer = setTimeout(this.redrawQuantumState, 1000)
+    }
+
+    redrawQuantumState = () => {
+        this.quantumState = new QuantumState({n: 5, l: 2, m: 1});
+        console.log(this.quantumState)
     }
 
     render() {

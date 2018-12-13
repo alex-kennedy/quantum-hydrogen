@@ -84,7 +84,7 @@ class Psi:
 
     def get_psi_normalization(self):
         norm = np.sqrt((2/(self.n*BOHR))**3 * factorial(self.n - self.l - 1) / (2*self.n*(factorial(self.n + 1)**3)))
-        norm *= 1 / (self.n * BOHR)**self.l
+        norm /= (self.n * BOHR)**self.l
         return norm
 
     def legendre(self, x):

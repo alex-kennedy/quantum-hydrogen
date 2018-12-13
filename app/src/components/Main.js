@@ -15,7 +15,6 @@ class Main extends React.Component {
       <div ref={this.props.setWrapperRef} id="main" style={this.props.timeout ? {display: 'flex'} : {display: 'none'}}>
 
         <article id="intro" className={`${this.props.article === 'intro' ? 'active' : ''} ${this.props.articleTimeout ? 'timeout' : ''}`} style={{display:'none'}}>
-          <MathJax.Provider>
             <h1 className="major">Quantum Hydrogen</h1>
             {/* <span className="image main"><img src={pic01} alt="" /></span> */}
 
@@ -23,11 +22,6 @@ class Main extends React.Component {
 
             <p>This is a little tool to visualize the possible quantum states of an electron orbiting a Hydrogen atom. These quantum states take some pretty extraordinary shapes.</p>
             {close}
-
-            <h2>The Short Version</h2>
-
-            <p><MathJax.Node inline formula={'m = '} /></p>
-          </MathJax.Provider>
         </article>
 
         {/* <article id="work" className={`${this.props.article === 'work' ? 'active' : ''} ${this.props.articleTimeout ? 'timeout' : ''}`} style={{display:'none'}}>

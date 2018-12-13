@@ -19,7 +19,6 @@ class IndexPage extends React.Component {
     this.handleCloseArticle = this.handleCloseArticle.bind(this);
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
-    this.changedQuantumNumber = this.changedQuantumNumber.bind(this);
   }
 
   componentDidMount () {
@@ -28,15 +27,10 @@ class IndexPage extends React.Component {
     }, 100);
     document.addEventListener('mousedown', this.handleClickOutside);
 
-    // Add change listeners
-    document.getElementById('n').addEventListener('input', this.changedQuantumNumber)
-    document.getElementById('l').addEventListener('input', this.changedQuantumNumber)
-    document.getElementById('m').addEventListener('input', this.changedQuantumNumber)
-
     // Add initial value/s
-    document.getElementById('n').value = '1'
-    document.getElementById('l').value = '0'
-    document.getElementById('m').value = '0'
+    document.getElementById('n').value = '1';
+    document.getElementById('l').value = '0';
+    document.getElementById('m').value = '0';
   }
 
   componentWillUnmount () {
@@ -106,15 +100,11 @@ class IndexPage extends React.Component {
 
     qNumberElement.dispatchEvent(event);
 
-    if (inc == 1) {
+    if (inc === 1) {
       qNumberElement.stepUp();
     } else {
       qNumberElement.stepDown();
     }
-  }
-
-  changedQuantumNumber(event) {
-    console.log('A quantum number changed!')
   }
 
   render() {
