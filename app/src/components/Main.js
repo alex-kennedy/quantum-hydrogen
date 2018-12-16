@@ -1,10 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import MathJax from 'react-mathjax'
-
-// import pic01 from '../images/pic01.jpg'
-// import pic02 from '../images/pic02.jpg'
-// import pic03 from '../images/pic03.jpg'
+import { Link } from 'gatsby';
 
 class Main extends React.Component {
   render() {
@@ -18,52 +14,28 @@ class Main extends React.Component {
             <h1 className="major">Quantum Hydrogen</h1>
             {/* <span className="image main"><img src={pic01} alt="" /></span> */}
 
-            <p>This project was made by Alex Kennedy. All code available on <a href="https://github.com/alex-kennedy/quantum-hydrogen/">GitHub</a>. </p>
+            <ul className="icons">
+              <li>
+                <a href="#" className="icon fa-github">
+                  <span className="label">GitHub</span>
+                </a> 
+              </li>
+              All code available on <a href="https://github.com/alex-kennedy/quantum-hydrogen/">GitHub</a>
+            </ul>
 
-            <p>This is a little tool to visualize the possible quantum states of an electron orbiting a Hydrogen atom. These quantum states take some pretty extraordinary shapes.</p>
+            <p>Made by Alex Kennedy.</p>
+
+            <h3>What is this?</h3>
+            <p>This is a little tool to visualize the 'quantum states' of an electron orbiting a Hydrogen atom. These quantum states take some pretty extraordinary shapes. </p>
+
+            <p>The images are derived from Quantum Physics. It is worthy of note that these 'shells', these 'shapes', are meager representations of the whole truth. In technical terms, they are surfaces of constant probability of finding the electron in that spot if its position were to be measured. Feel free to read the details page for a more complete picture! </p>
+
+            <p>My reference for this work is <a href="https://books.google.com/books?vid=ISBN0131118927">Introduction to Quantum Mechanics (2nd Edition): David J. Girffiths</a></p>
+
+            <p><Link to="/details">Technical details</Link></p>
+
             {close}
         </article>
-
-        {/* <article id="work" className={`${this.props.article === 'work' ? 'active' : ''} ${this.props.articleTimeout ? 'timeout' : ''}`} style={{display:'none'}}>
-          <h2 className="major">Work</h2>
-          <span className="image main"><img src={pic02} alt="" /></span>
-          <p>Adipiscing magna sed dolor elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices.</p>
-          <p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet feugiat tempus.</p>
-          {close}
-        </article> */}
-
-        {/* <article id="about" className={`${this.props.article === 'about' ? 'active' : ''} ${this.props.articleTimeout ? 'timeout' : ''}`} style={{display:'none'}}>
-          <h2 className="major">About</h2>
-          <span className="image main"><img src={pic03} alt="" /></span>
-          <p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices. Aliquam libero et malesuada fames ac ante ipsum primis in faucibus. Cras viverra ligula sit amet ex mollis mattis lorem ipsum dolor sit amet.</p>
-          {close}
-        </article> */}
-
-        {/* <article id="contact" className={`${this.props.article === 'contact' ? 'active' : ''} ${this.props.articleTimeout ? 'timeout' : ''}`} style={{display:'none'}}>
-          <h2 className="major">Contact</h2>
-          <form method="post" action="#">
-            <div className="field half first">
-              <label htmlFor="name">Name</label>
-              <input type="text" name="name" id="name" />
-            </div>
-            <div className="field half">
-              <label htmlFor="email">Email</label>
-              <input type="text" name="email" id="email" />
-            </div>
-            <div className="field">
-              <label htmlFor="message">Message</label>
-              <textarea name="message" id="message" rows="4"></textarea>
-            </div>
-            <ul className="actions">
-              <li><input type="submit" value="Send Message" className="special" /></li>
-              <li><input type="reset" value="Reset" /></li>
-            </ul>
-          </form>
-          <ul className="icons">
-            <li><a href="#" className="icon fa-github"><span className="label">GitHub</span></a></li>
-          </ul>
-          {close}
-        </article> */}
       </div>
     )
   }

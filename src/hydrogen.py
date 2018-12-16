@@ -92,7 +92,7 @@ class Psi:
 
     def associated_legendre(self, x):
         multiplier = (1 - x**2) ** (abs(self.m) / 2)
-        return np.sum(multiplier * self.assoc_leg_coefs * x**self.assoc_leg_k, axis=0)
+        return multiplier * np.sum(self.assoc_leg_coefs * x**self.assoc_leg_k, axis=0)
 
     def spherical_harmonic(self, theta):
         return self.spherical_harmonic_coef * self.associated_legendre(np.cos(theta))
@@ -101,17 +101,9 @@ class Psi:
         return np.sum(self.lag_coefs * x**self.lag_k, axis=0)
 
     def associated_laguerre(self, x):
-        return np.sum((-1)**self.p * self.assoc_lag_coefs * x**self.assoc_lag_k, axis=0)
+        return (-1)**self.p * np.sum(self.assoc_lag_coefs * x**self.assoc_lag_k, axis=0)
 
     def probability_density(self, r, theta):
-        # print('q = {}, p = {}'.format(self.q, self.p))
-        # print('L_{}^{}'.format(self.q-self.p, self.p))
-        # print('norm: ', self.psi_normalization)
-        # print('exp: ', np.exp(-r / (self.n * BOHR)))
-        # print('to the power of l: ', (2 * r) ** self.l)
-        # print('laguerre: ', self.associated_laguerre(2*r / (self.n * BOHR)))
-        # print('sh: ', self.spherical_harmonic(theta))
-
         psi = self.psi_normalization * \
             np.exp(-r / (self.n * BOHR)) * \
             (2 * r) ** self.l * \
@@ -121,9 +113,10 @@ class Psi:
 
 
 if __name__ == '__main__':
-    electron = Psi(3, 2, 0)
+    n, l, m = 5, 2, 1
+    electron = Psi(n, l, m)
 
-    x = np.linspace(-50*BOHR, 50*BOHR, 500)
+    x = np.linspace(-2*n**2*BOHR, 2*n**2*BOHR, 500)
     thing = np.empty([500,500])
     for i in range(500):
         r = np.sqrt(x[i]**2 + x**2)

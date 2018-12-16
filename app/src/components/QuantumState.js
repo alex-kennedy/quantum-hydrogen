@@ -1,55 +1,14 @@
-import nj from 'numjs';
-// import { factorial, combinations } from 'mathjs';
-// import math from 'mathjs';
 import { gamma } from 'mathjs';
-import { number } from 'prop-types';
+import {isoLines, QuadTree} from 'marchingsquares';
 
-// Factorial of an array
 function factorial(k) {
-    // if (typeof(k) == 'number') return(gamma(k + 1));
-
     return gamma(k + 1);
-
-    // var out = nj.zeros(k.shape[0]);
-    // for (var i=0; i<k.shape[0]; i++) out.set(i, gamma(k.get(i) + 1));
-    // return out;
 }
 
-// Binomial coefficient where both inputs are numbers
+// Binomial coefficient
 function binomial(n, k) {
     return factorial(n) / (factorial(k) * factorial(n - k));
 }
-
-// Binomial coefficient where the arguments may be arrays
-// function binomArray(n, k) {
-//     if (typeof(n) == 'number' && typeof(k) == 'number') {
-
-//         return binom(n, k);
-    
-//     } else if (n instanceof nj.NdArray && k instanceof nj.NdArray) {
-
-//     } else if (n instanceof nj.NdArray) {
-
-//         k = nj.multiply(nj.ones(n.shape), k);    
-
-//     } else if (k instanceof nj.NdArray) {
-
-//         n = nj.multiply(nj.ones(k.shape), n);
-
-//     } else {
-
-//         console.log(n, k);
-//         throw "Didn't understand data types.";
-
-//     }
-
-//     var out = nj.ones(k.shape)
-//     for (var i=0; i<k.shape[0]; i++) {
-//         out.set(i, binom(n.get(i), k.get(i)));
-//     }
-
-//     return out;
-// }
 
 
 class QuantumState {
@@ -64,12 +23,21 @@ class QuantumState {
         // The Bohr Radius
         this.BOHR = 5.29177211e-11 //m 
 
-        this.getLegendreCoefs();
-        this.getAssociatedLegendreCoefs();
-        this.getSphericalHarmonicCoef();
-        this.getLaguerreCoefs()
-        this.getAssociatedLaguerreCoefs();
-        this.getPsiNormalization();
+        // Quantum State Functions
+        this.legCoefs = this.getLegendreCoefs();
+        this.assocLegCoefs = this.getAssociatedLegendreCoefs();
+        this.sphericalHarmonicCoef = this.getSphericalHarmonicCoef();
+        this.lagCoefs = this.getLaguerreCoefs()
+        this.assocLagCoefs = this.getAssociatedLaguerreCoefs();
+        this.psiNormalization = this.getPsiNormalization();
+
+        // Grid size (roughly, the resolution)
+        this.probGridSize = 200; 
+
+        // Determine probabibilites and constant probability lines
+        this.probGrid = this.getProbabilityGrid();
+        this.lines = this.getContour();
+
     }
 
     getLegendreCoefs() {
@@ -83,8 +51,6 @@ class QuantumState {
             coefs[k] = c;
         }
 
-        this.legCoefs = coefs;
-
         return coefs
     }
 
@@ -96,7 +62,6 @@ class QuantumState {
             coefs[i] = this.legCoefs[m + i] * factorial(i + m) / factorial(i);
         }
 
-        this.assocLegCoefs = coefs;
         return coefs;
     }
 
@@ -106,7 +71,6 @@ class QuantumState {
         var m = this.m;
         var preFactor = Math.pow(((2*this.l + 1) / (4 * Math.PI)) * (factorial(this.l - m) / factorial(this.l + m)), 1/2)
 
-        this.sphericalHarmonicCoef = epsilon * preFactor;
         return epsilon * preFactor;
     }
 
@@ -116,8 +80,7 @@ class QuantumState {
         for (var k = 0; k <= this.q; k++) {
             coefs[k] = Math.pow(-1, k) * Math.pow(factorial(this.q) / factorial(k), 2) / factorial(this.q - k);
         }
-        
-        this.lagCoefs = coefs;
+
         return coefs;
     }
 
@@ -128,7 +91,6 @@ class QuantumState {
             coefs[k] = this.lagCoefs[this.p + k] * factorial(this.p + k) / factorial(k);
         }
 
-        this.assocLagCoefs = coefs;
         return coefs;
     }
 
@@ -138,9 +100,77 @@ class QuantumState {
         norm /= 2*this.n * Math.pow(factorial(this.n + 1), 3);
         norm = Math.sqrt(norm)
         norm /= Math.pow((this.n * this.BOHR), this.l)
-        
-        this.psiNormalization = norm;
+
         return norm;
+    }
+
+    associatedLegendre(x) {
+        let multiplier = Math.pow((1 - Math.pow(x, 2)), (Math.abs(this.m) / 2));
+        let p = 0;
+
+        for (let i = 0; i < this.assocLegCoefs.length; i++) {
+            p += this.assocLegCoefs[i] * Math.pow(x, i);
+        }
+
+        return multiplier * p;
+    }
+
+    associatedLaguerre(x) {
+        let p = 0;
+
+        for (let i = 0; i < this.assocLagCoefs.length; i++) {
+            p += Math.pow(-1, this.p) * this.assocLagCoefs[i] * Math.pow(x, i);
+        }
+
+        return p;
+    }
+
+    sphericalHarmonic(theta) {
+        return this.sphericalHarmonicCoef * this.associatedLegendre(Math.cos(theta));
+    }
+
+    probabilityDensity(r, theta) {
+        let psi = this.psiNormalization;
+        psi *= Math.exp(-r / (this.n * this.BOHR));
+        psi *= Math.pow((2 * r), this.l);
+        psi *= this.associatedLaguerre(2*r / (this.n * this.BOHR))
+        psi *= this.sphericalHarmonic(theta);
+        
+        return Math.pow(psi, 2);
+    }
+
+    getProbabilityGrid() {
+        const maxRadius = 2 * Math.pow(this.n, 2) * this.BOHR;
+
+        let probGrid = new Array();
+        let x, y, r, theta;
+
+        for (let i = 0; i < this.probGridSize; i++) {
+            y = (maxRadius / this.probGridSize) * (i + 1);
+            probGrid[i] = new Array(this.probGridSize);
+
+            for (let j = 0; j < this.probGridSize; j++) {
+                x = (maxRadius / this.probGridSize) * (j + 1);
+
+                r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+                theta = Math.atan(y / x);
+
+                probGrid[i][j] = this.probabilityDensity(r, theta);
+            }
+        }
+        
+        return probGrid;
+    }
+
+    getContour(level) {
+        level = level || 1e28;
+
+        console.log(level);
+
+        let prepData = new QuadTree(this.probGrid);
+        let lines = isoLines(prepData, level);
+        
+        return lines;
     }
 }
 
