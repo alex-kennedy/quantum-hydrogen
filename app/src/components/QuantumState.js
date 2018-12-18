@@ -142,7 +142,7 @@ class QuantumState {
     getProbabilityGrid() {
         const maxRadius = 2 * Math.pow(this.n, 2) * this.BOHR;
 
-        let probGrid = new Array();
+        let probGrid = new Array(this.probGridSize);
         let x, y, r, theta;
 
         for (let i = 0; i < this.probGridSize; i++) {
@@ -164,8 +164,6 @@ class QuantumState {
 
     getContour(level) {
         level = level || 1e28;
-
-        console.log(level);
 
         let prepData = new QuadTree(this.probGrid);
         let lines = isoLines(prepData, level);

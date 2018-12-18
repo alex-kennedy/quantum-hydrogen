@@ -1,0 +1,31 @@
+.tooltip {
+    position: absolute;
+    background: rgb(70, 17, 10);
+    color: white;
+    width: 150px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px rgb(70, 17, 10);
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 5px;
+
+    .tooltip-arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        position: absolute;
+        margin: 5px 0 0 5px;
+        border-color: rgb(70, 17, 10);
+        border-width: 5px 5px 0 5px;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        bottom: -5px;
+        left: calc(50% - 5px);
+        
+    }
+}
+
+.tooltip-message {
+    display: none;
+}

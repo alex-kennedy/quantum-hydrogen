@@ -94,13 +94,42 @@ class ThreeScene extends Component {
         this.camera.updateProjectionMatrix();
     }
 
+    validateQuantumState = () => {
+        let n = parseInt( document.getElementById('n').value );
+        let l = parseInt( document.getElementById('l').value );
+        let m = parseInt( document.getElementById('m').value );
+
+        console.log(n, l, m);
+        
+        if ( isNaN(n) || isNaN(l) || isNaN(m) ) {
+            console.log('invalid!')
+            return false; // a value is empty
+        } else if (n > 50 || n < 1 || l < 0) {
+            console.log('invalid!')
+            return false; // n or l negative, n too large. 
+        } else if (Math.abs(m) > l) {
+            console.log('invalid!')
+            return false; // +/- m must be less than l
+        } 
+
+        return true;
+    }
+
     waitToRedrawQuantumState = () => {
         clearTimeout(this.redrawTimer);
-        this.redrawTimer = setTimeout(this.redrawQuantumState, 1000)
+
+        if ( this.validateQuantumState() ) {
+            this.redrawTimer = setTimeout(this.redrawQuantumState, 0)
+        }
     }
 
     redrawQuantumState = () => {
-        this.quantumState = new QuantumState({n: 5, l: 2, m: 1});
+        let state = {
+            n: parseInt( document.getElementById('n').value ),
+            l: parseInt( document.getElementById('l').value ),
+            m: parseInt( document.getElementById('m').value )
+        }
+        this.quantumState = new QuantumState(state);
         console.log(this.quantumState)
     }
 
