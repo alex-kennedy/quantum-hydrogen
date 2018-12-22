@@ -32,7 +32,7 @@ const DetailsPage = () => (
 
       For our purposes, it is easier to work with the Laguerre Polynomial in closed form. Note this differs by a factor of <MathJax.Node inline formula={'q!'} /> from the form often used by Mathmeticians. 
 
-      <MathJax.Node formula={'L_q(x) = q! \\sum_{k=0}^q \\left({n} \\text{ choose }{k} \\right) \\frac{(-1)^{k}}{k!}x^k '} />
+      <MathJax.Node formula={'L_q(x) = q! \\sum_{k=0}^q \\binom{n}{k}  \\frac{(-1)^{k}}{k!}x^k '} />
 
       The Spherical Harmonic is defined by 
       <MathJax.Node formula={'Y_l^m(\\theta, \\phi) = \\epsilon \\sqrt{\\frac{(2l + 1)}{4\\pi} \\frac{(l-|m|)!}{(l + |m|)!}} e^{im\\phi} P_l^m(\\cos \\theta)'} />
@@ -47,7 +47,7 @@ const DetailsPage = () => (
 
       Once again, in our case, the explicit representation is easiest to work with:
 
-      <MathJax.Node formula={'P_l(x) = 2^n \\sum_{k=0}^l x^l \\left(n \\text{choose} k\\right) \\left((n+k+1)/2 \\text{choose} l \\right)'} />
+      <MathJax.Node formula={'P_l(x) = 2^l \\sum_{k=0}^l x^l \\binom{l}{k} \\binom{(l+k+1)/2}{l}'} />
 
     </MathJax.Provider>
   </Layout>

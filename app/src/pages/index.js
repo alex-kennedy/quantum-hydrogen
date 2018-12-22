@@ -155,7 +155,7 @@ class IndexPage extends React.Component {
     let l = parseInt( document.getElementById('l').value );
     let n = parseInt( document.getElementById('n').value );
 
-    if (l > n) {
+    if (l >= n) {
       this.lTool.updateTitleContent(
         document.getElementById('message-l-lessequal-n').firstElementChild.cloneNode(true)
       )
@@ -239,7 +239,7 @@ class IndexPage extends React.Component {
         </div>
         <div className='tooltip-message' id='message-l-lessequal-n'>
           <MathJax.Provider>
-            <div><MathJax.Node inline formula={'l'} /> must be less than or equal to <MathJax.Node inline formula={'n'}/>.</div>
+            <div><MathJax.Node inline formula={'l'} /> must be less than <MathJax.Node inline formula={'n'}/>.</div>
           </MathJax.Provider>
         </div>
         <div className='tooltip-message' id='message-l-positive'>

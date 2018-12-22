@@ -34,7 +34,7 @@ class Main extends React.Component {
 
             <ul>
               <li><MathJax.Node inline formula={'n'} /> is the 'principal quantum number,' it determines the energy of the state. <MathJax.Node inline formula={'n \\ge 1'} /> </li>
-              <li><MathJax.Node inline formula={'l'} /> is the 'orbital quantum number.' <MathJax.Node inline formula={'l \\le n'} />  </li>
+              <li><MathJax.Node inline formula={'l'} /> is the 'orbital quantum number.' <MathJax.Node inline formula={'l < n'} />  </li>
               <li><MathJax.Node inline formula={'m'} /> is the 'magnetic quantum number.' <MathJax.Node inline formula={'-l \\le m \\le l'} /></li>
             </ul>
 

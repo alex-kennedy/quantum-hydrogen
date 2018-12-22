@@ -35,8 +35,8 @@ class QuantumState {
         this.probGridSize = 200; 
 
         // Determine probabibilites and constant probability lines
-        this.probGrid = this.getProbabilityGrid();
-        this.lines = this.getContour();
+        this.createProbabilityGrid();
+        this.createContours();
 
     }
 
@@ -139,36 +139,44 @@ class QuantumState {
         return Math.pow(psi, 2);
     }
 
-    getProbabilityGrid() {
+    createProbabilityGrid() {
         const maxRadius = 2 * Math.pow(this.n, 2) * this.BOHR;
 
-        let probGrid = new Array(this.probGridSize);
-        let x, y, r, theta;
+        let probGrid = new Array(this.probGridSize * 2);
+        let x, y, r, theta, prob, iTop, iBottom;
+        let sum = 0;
 
         for (let i = 0; i < this.probGridSize; i++) {
-            y = (maxRadius / this.probGridSize) * (i + 1);
-            probGrid[i] = new Array(this.probGridSize);
+            y = (maxRadius / this.probGridSize) * i + this.BOHR/1000;
+            iTop = this.probGridSize - 1 - i;
+            iBottom = this.probGridSize + i;
+
+            probGrid[iTop] = new Array(this.probGridSize);
+            probGrid[iBottom] = new Array(this.probGridSize);
 
             for (let j = 0; j < this.probGridSize; j++) {
-                x = (maxRadius / this.probGridSize) * (j + 1);
+                x = (maxRadius / this.probGridSize) * j + this.BOHR/1000;
 
                 r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
                 theta = Math.atan(y / x);
-
-                probGrid[i][j] = this.probabilityDensity(r, theta);
+                
+                prob = this.probabilityDensity(r, theta);
+                probGrid[iTop][j] = prob;
+                probGrid[iBottom][j] = prob;
+                sum += prob;
             }
         }
-        
-        return probGrid;
+
+        this.probGridMean = sum / Math.pow(this.probGridSize, 2);
+        this.probGrid = probGrid;
     }
 
-    getContour(level) {
-        level = level || 1e28;
-
+    createContours() {
+        let level = this.probGridMean;
         let prepData = new QuadTree(this.probGrid);
-        let lines = isoLines(prepData, level);
+        let lines = isoLines(prepData, level, {linearRing: true});
         
-        return lines;
+        this.contourLines = lines;
     }
 }
 
