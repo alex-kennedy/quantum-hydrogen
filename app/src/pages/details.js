@@ -39,11 +39,11 @@ const DetailsPage = () => (
 
       Where <MathJax.Node inline formula={'\\epsilon = (-1)^m'}/> for <MathJax.Node inline formula={'m\\ge0'}/> and <MathJax.Node inline formula={'1'}/> otherwise. <MathJax.Node inline formula={'P_l^m(x)'} /> is an associated Legendre Polynomial, defined by
 
-      <MathJax.Node formula={'L_l^m(x) = (1 - x^2)^(|m|/2) \\left(\\frac{d}{dx}\\right)^m P_l(x), '} />
+      <MathJax.Node formula={'P_l^m(x) = (1 - x^2)^(|m|/2) \\left(\\frac{d}{dx}\\right)^m P_l(x), '} />
 
       and <MathJax.Node inline formula={'P_l(x)'} /> is the Legendre Polynomial, defined by
 
-      <MathJax.Node formula={'\\frac{1}{2^l l!} \\left(\\frac{d}{dx}\\right) (x^2 - 1)^l.'} />
+      <MathJax.Node formula={'P_l(x) = \\frac{1}{2^l l!} \\left(\\frac{d}{dx}\\right) (x^2 - 1)^l.'} />
 
       Once again, in our case, the explicit representation is easiest to work with:
 
