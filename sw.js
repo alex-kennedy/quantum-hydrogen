@@ -26,27 +26,27 @@ workbox.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-b052cd9d0afd3506c3e2.js"
+    "url": "webpack-runtime-1ed0b4d5e99e1282785b.js"
   },
   {
-    "url": "app-cd07846067ae553219f9.js"
+    "url": "app-d8f10df1c1dce38dee96.js"
   },
   {
     "url": "component---node-modules-gatsby-plugin-offline-app-shell-js-9538d068e15af3827374.js"
   },
   {
     "url": "index.html",
-    "revision": "993bf1fa846d7b9659b815442a295be0"
+    "revision": "b692cca7d4aba93be45dfd464144042a"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "54f3349df5eae089a11aa7da537a7ca1"
+    "revision": "4759a0ba9d4983bd72f7f6e26179c2e1"
   },
   {
-    "url": "1.b74714792d45d31b2db9.css"
+    "url": "1.6f00c2decc88081dd764.css"
   },
   {
-    "url": "component---src-pages-index-js-39a4782c559e1bfc4efe.js"
+    "url": "component---src-pages-index-js-8e2e37b4bab4da222bc7.js"
   },
   {
     "url": "1-4f3bfc835683cb95674d.js"
@@ -55,7 +55,7 @@ self.__precacheManifest = [
     "url": "8-6374592c8f669b075551.js"
   },
   {
-    "url": "0-75caf092f10b37e1bf71.js"
+    "url": "0-cf311a4651608f923ccb.js"
   },
   {
     "url": "static/d/173/path---index-6a9-NZuapzHg3X9TaN1iIixfv1W23E.json",
@@ -80,7 +80,7 @@ self.__precacheManifest = [
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/quantum-hydrogen/offline-plugin-app-shell-fallback/index.html", {
+workbox.routing.registerNavigationRoute("/offline-plugin-app-shell-fallback/index.html", {
   whitelist: [/^[^?]*([^.?]{5}|\.html)(\?.*)?$/],
   blacklist: [/\?(.+&)?no-cache=1$/],
 });
