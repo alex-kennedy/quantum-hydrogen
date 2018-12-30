@@ -17,7 +17,7 @@ class ThreeScene extends Component {
 
         window.addEventListener("resize", this.updateDimensions);
 
-        //ADD SCENE
+        //Add scene
         this.scene = new THREE.Scene();
 
         //ADD CAMERA
@@ -29,7 +29,7 @@ class ThreeScene extends Component {
         );
         this.camera.position.z = 400;
 
-        // LIGHTS
+        // Lights
         let ambientLight = new THREE.AmbientLight(0x000000);
         this.scene.add(ambientLight);
 
@@ -47,17 +47,19 @@ class ThreeScene extends Component {
 
         for (let i = 0; i < lightLocations.length; i++) {
             let light = new THREE.PointLight(0xffffff, 2, 1000, 1.8);
+
             light.position.set( lightLocations[i][0], lightLocations[i][1], lightLocations[i][2] );
             this.scene.add(light);
+
+            // Add marker points for lights
             // this.scene.add( new THREE.PointLightHelper(light, 10) );
         }
 
-        // FOG
+        // Fog
         this.scene.fog = new THREE.FogExp2(0xffffff, 0.0025);
 
-        // CONTROLS
-        const controls = new OrbitControls(this.camera, document.getElementById('bg'));
-        this.controls = controls;
+        // Contols
+        this.controls = new OrbitControls(this.camera, document.getElementById('bg'));
         this.controls.enablePan = false;
         this.controls.enableKeys = false;
         this.controls.enableDamping = true;
@@ -66,7 +68,7 @@ class ThreeScene extends Component {
         this.controls.target.set(0, 0, 200);
         this.controls.maxDistance = 300;
 
-        //ADD RENDERER
+        //Add renderer
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor('#000000', 1);
@@ -78,13 +80,13 @@ class ThreeScene extends Component {
         document.getElementById('l').addEventListener('input', this.waitToRedrawQuantumState);
         document.getElementById('m').addEventListener('input', this.waitToRedrawQuantumState);
 
-        // Quantum state and redraw timer
+        // Quantum state redraw timer
         this.redrawTimer = 0;
 
         // Number of radial segments when drawing shapes
         this.radialResolution = 50;
         
-        // Material for states
+        // Material for all the shapes
         this.quantumMaterial = new THREE.MeshLambertMaterial({
             wireframe: false, 
             side: THREE.DoubleSide, 
@@ -97,9 +99,7 @@ class ThreeScene extends Component {
         // Number of base items in the scene - i.e. the lights
         this.numberBaseChildren = this.scene.children.length;
 
-        console.log(this);
-        console.log(THREE);
-        
+        // Begin the animation
         this.start();
     }
 
@@ -150,9 +150,9 @@ class ThreeScene extends Component {
         } else if (n > 50 || n < 1 || l < 0) {
             console.log('invalid!')
             return false; // n or l negative, n too large. 
-        } else if (Math.abs(m) > l) {
+        } else if (Math.abs(m) > l || l >= n) {
             console.log('invalid!')
-            return false; // +/- m must be less than l
+            return false; // +/- m must be less than l, l should be strictly less than n
         } 
 
         return true;
@@ -160,7 +160,6 @@ class ThreeScene extends Component {
 
     processRawContours(contourLines, gridSize) {
         let newLines = [];
-        let newLinesClosed = [];
         let il = -1;
         let ipNew = -1;
         let ip, ic, edgeZone, line, start, end, distance;
@@ -189,19 +188,49 @@ class ThreeScene extends Component {
             }
         }
 
+        // Make sure there are no gaps when rendering lines
         for (il = 0; il < newLines.length; il++) {
             start = newLines[il][0];
             end = newLines[il][newLines[il].length - 1];
 
             distance = Math.sqrt(Math.pow(end[0] - start[0], 2) + Math.pow(end[1] - start[1], 2));
 
-            newLinesClosed.push(distance < 1);
+            if (distance < 1) {
+                // loop back on self because this curve is closed
+                newLines[il].push(start);
+            } else {
+                // cap the top and bottom (close with the z-axis)
+                newLines[il].unshift([0, start[1]]);
+                newLines[il].push([0, end[1]]);
+            }
         }
 
-        return [newLines, newLinesClosed];
+        return newLines;
     }
 
-    buildBufferGeometryFromContour(contour, closed) {
+    downSampleArray(numbers, newLength) {
+        // Creates a new array which maintains the end points of the input
+        // array, and keeps reglarly indexed values
+
+        if (numbers.length <= newLength) {
+            return numbers;
+        }
+
+        let newArray = [];
+        let keepRate = Math.floor(numbers.length / newLength);
+
+        newArray.push(numbers[0]);
+
+        for (let i = keepRate; i < numbers.length - 1; i += keepRate) {
+            newArray.push(numbers[i]);
+        }
+
+        newArray.push(numbers[numbers.length - 1]);
+
+        return newArray;
+    }
+
+    buildBufferGeometryFromContour(contour) {
         // Based on THREE.SphereBufferGeometry
         // https://github.com/mrdoob/three.js/blob/master/src/geometries/SphereGeometry.js
 
@@ -219,15 +248,6 @@ class ThreeScene extends Component {
         let vertices = [];
         let normals = [];
         let uvs = [];
-
-        if (closed) {
-            // make sure the contours stitch correctly
-            contour.push(contour[0]);
-        } else {
-            // cap the top and bottom
-            contour.unshift([0, contour[0][1]]);
-            contour.push([0, contour[contour.length - 1][1]]);
-        }
 
         for (iy = 0; iy < contour.length; iy++) {
             let verticesRow = [];
@@ -254,8 +274,8 @@ class ThreeScene extends Component {
             grid.push(verticesRow);
         }
 
-        for ( iy = 0; iy < contour.length - 1; iy ++ ) {
-            for ( ix = 0; ix < this.radialResolution; ix ++ ) {
+        for (iy = 0; iy < contour.length - 1; iy++) {
+            for (ix = 0; ix < this.radialResolution; ix++) {
                 let a = grid[ iy ][ ix + 1 ];
                 let b = grid[ iy ][ ix ];
                 let c = grid[ iy + 1 ][ ix ];
@@ -282,7 +302,7 @@ class ThreeScene extends Component {
         }
     }
 
-    redrawQuantumState = () => {
+    redrawQuantumState() {
         let state = {
             n: parseInt( document.getElementById('n').value ),
             l: parseInt( document.getElementById('l').value ),
@@ -294,13 +314,18 @@ class ThreeScene extends Component {
         for (let i = this.scene.children.length; i >= this.numberBaseChildren; i--) {
             this.scene.remove(this.scene.children[i]);
         }
-
+        
+        // Process the contours into individual lines to render
         let lines = this.processRawContours(this.quantumState.contourLines, this.quantumState.probGridSize);
-        let linesCoords = lines[0];
-        let linesClosed = lines[1];
 
-        for (let i = 0; i < linesCoords.length; i++) {
-            let bufferGeometry = this.buildBufferGeometryFromContour(linesCoords[i], linesClosed[i]);
+        // Downsample the lines so they're faster to render
+        for (let i = 0; i < lines.length; i++) {
+            lines[i] = this.downSampleArray(lines[i], 100);
+        }
+        
+        // Create shapes and add them to the scene
+        for (let i = 0; i < lines.length; i++) {
+            let bufferGeometry = this.buildBufferGeometryFromContour(lines[i]);
             let mesh = new THREE.Mesh(bufferGeometry);
 
             mesh.material = this.quantumMaterial;

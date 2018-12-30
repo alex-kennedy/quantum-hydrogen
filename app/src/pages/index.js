@@ -22,6 +22,7 @@ class IndexPage extends React.Component {
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.incrementValue = this.incrementValue.bind(this);
+    this.validateNLM = this.validateNLM.bind(this);
     this.validateN = this.validateN.bind(this);
     this.validateL = this.validateL.bind(this);
     this.validateM = this.validateM.bind(this);
@@ -43,14 +44,16 @@ class IndexPage extends React.Component {
     this.lTool = new ToolTip(document.getElementById('l'), {trigger: 'manual', html: true});
     this.mTool = new ToolTip(document.getElementById('m'), {trigger: 'manual', html: true});
 
-    document.getElementById('n').addEventListener('input', this.validateN);
-    document.getElementById('l').addEventListener('input', this.validateL);
-    document.getElementById('m').addEventListener('input', this.validateM);
+    document.getElementById('n').addEventListener('input', this.validateNLM);
+    document.getElementById('l').addEventListener('input', this.validateNLM);
+    document.getElementById('m').addEventListener('input', this.validateNLM);
 
     // Quantum number tooltip timeouts
     this.nToolTipTimer = 0;
     this.lToolTipTimer = 0;
     this.mToolTipTimer = 0;
+
+    this.incrementValue('n');
   }
 
   componentWillUnmount () {
@@ -120,11 +123,17 @@ class IndexPage extends React.Component {
 
     if (inc === 1) {
       qNumberElement.stepUp();
-    } else {
+    } else if (inc === -1) {
       qNumberElement.stepDown();
     }
 
     qNumberElement.dispatchEvent(event);
+  }
+
+  validateNLM() {
+    this.validateN();
+    this.validateL();
+    this.validateM();
   }
 
   validateN() {
