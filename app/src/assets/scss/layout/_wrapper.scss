@@ -1,3 +1,5 @@
+@use "../libs/skel";
+
 ///
 /// Dimension by HTML5 UP
 /// html5up.net | @ajlkn
@@ -7,10 +9,10 @@
 /* Wrapper */
 
 	#wrapper {
-		@include vendor('display', 'flex');
-		@include vendor('flex-direction', 'column');
-		@include vendor('align-items', 'center');
-		@include vendor('justify-content', 'space-between');
+		@include skel.vendor('display', 'flex');
+		@include skel.vendor('flex-direction', 'column');
+		@include skel.vendor('align-items', 'center');
+		@include skel.vendor('justify-content', 'space-between');
 		position: relative;
 		min-height: 100vh;
 		width: 100%;
@@ -22,19 +24,19 @@
 			display: block;
 		}
 
-		@include breakpoint(xlarge) {
+		@include skel.breakpoint(xlarge) {
 			padding: 3rem 2rem;
 		}
 
-		@include breakpoint(small) {
+		@include skel.breakpoint(small) {
 			padding: 2rem 1rem;
 		}
 
-		@include breakpoint(xsmall) {
+		@include skel.breakpoint(xsmall) {
 			padding: 1rem;
 		}
 
 		&.page {
-			@include vendor('justify-content', 'flex-start');
+			@include skel.vendor('justify-content', 'flex-start');
 		}
 	}

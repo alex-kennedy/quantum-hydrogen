@@ -1,3 +1,6 @@
+@use "../libs/functions";
+@use "../libs/skel";
+
 ///
 /// Dimension by HTML5 UP
 /// html5up.net | @ajlkn
@@ -7,16 +10,16 @@
 /* Image */
 
 	.image {
-		border-radius: _size(border-radius);
+		border-radius: functions.size(border-radius);
 		border: 0;
 		display: inline-block;
 		position: relative;
 
 		&:before {
-			@include vendor('pointer-events', 'none');
+			@include skel.vendor('pointer-events', 'none');
 			background-image: url('../../images/overlay.png');
-			background-color: _palette(bg-overlay);
-			border-radius: _size(border-radius);
+			background-color: functions.palette(bg-overlay);
+			border-radius: functions.size(border-radius);
 			content: '';
 			display: block;
 			height: 100%;
@@ -28,7 +31,7 @@
 		}
 
 		img {
-			border-radius: _size(border-radius);
+			border-radius: functions.size(border-radius);
 			display: block;
 		}
 
@@ -55,7 +58,7 @@
 
 		&.fit {
 			display: block;
-			margin: 0 0 _size(element-margin) 0;
+			margin: 0 0 functions.size(element-margin) 0;
 			width: 100%;
 
 			img {
@@ -65,7 +68,7 @@
 
 		&.main {
 			display: block;
-			margin: (_size(element-margin) * 1.25) 0;
+			margin: (functions.size(element-margin) * 1.25) 0;
 			width: 100%;
 
 			img {
@@ -73,15 +76,15 @@
 			}
 		}
 
-		@include breakpoint(small) {
+		@include skel.breakpoint(small) {
 			&.main {
-				margin: (_size(element-margin) * 1) 0;
+				margin: (functions.size(element-margin) * 1) 0;
 			}
 		}
 
-		@include breakpoint(xsmall) {
+		@include skel.breakpoint(xsmall) {
 			&.main {
-				margin: (_size(element-margin) * 0.75) 0;
+				margin: (functions.size(element-margin) * 0.75) 0;
 			}
 		}
 	}

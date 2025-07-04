@@ -1,3 +1,6 @@
+@use "../libs/functions";
+@use "../libs/skel";
+
 ///
 /// Dimension by HTML5 UP
 /// html5up.net | @ajlkn
@@ -11,19 +14,19 @@
 	input[type="button"],
 	button,
 	.button {
-		@include vendor('appearance', 'none');
-		@include vendor('transition', 'background-color #{_duration(transition)} ease-in-out, color #{_duration(transition)} ease-in-out');
+		@include skel.vendor('appearance', 'none');
+		@include skel.vendor('transition', 'background-color #{functions.duration(transition)} ease-in-out, color #{functions.duration(transition)} ease-in-out');
 		background-color: transparent;
 		// border-radius: _size(border-radius);
 		border: 0px;
 		// box-shadow: inset 0 0 0 _size(border-width) _palette(border);
-		color: _palette(fg-bold) !important;
+		color: functions.palette(fg-bold) !important;
 		cursor: pointer;
 		font-size: 0.8rem;
-		font-weight: _font(weight);
+		font-weight: functions.font(weight);
 		// height: _size(element-height);
-		letter-spacing: _font(letter-spacing);
-		line-height: _size(element-height);
+		letter-spacing: functions.font(letter-spacing);
+		line-height: functions.size(element-height);
 		outline: 0;
 		// padding: 0 1.25rem 0 (1.25rem + (_font(letter-spacing) * 0.5));
 		text-align: center;
@@ -33,11 +36,11 @@
 		// float: right;
 
 		&:hover {
-			background-color: _palette(border-bg);
+			background-color: functions.palette(border-bg);
 		}
 
 		&:active {
-			background-color: _palette(border-bg-alt);
+			background-color: functions.palette(border-bg-alt);
 		}
 
 		&.icon {
@@ -48,14 +51,14 @@
 
 		&.fit {
 			display: block;
-			margin: 0 0 (_size(element-margin) * 0.5) 0;
+			margin: 0 0 (functions.size(element-margin) * 0.5) 0;
 			width: 100%;
 		}
 
 		&.special {
-			background-color: _palette(fg-bold);
-			color: _palette(bg) !important;
-			font-weight: _font(weight-bold);
+			background-color: functions.palette(fg-bold);
+			color: functions.palette(bg) !important;
+			font-weight: functions.font(weight-bold);
 
 			&:hover {
 			}
@@ -66,7 +69,7 @@
 
 		&.disabled,
 		&:disabled {
-			@include vendor('pointer-events', 'none');
+			@include skel.vendor('pointer-events', 'none');
 			cursor: default;
 			opacity: 0.25;
 		}
@@ -76,5 +79,5 @@
 	input[type="reset"],
 	input[type="button"],
 	button {
-		line-height: calc(#{_size(element-height)} - 2px);
+		line-height: calc(#{functions.size(element-height)} - 2px);
 	}

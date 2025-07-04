@@ -17,8 +17,8 @@ const Layout = ({ children, location }) => {
     )
   } else {
     content = (
-      <div id="outer-wrapper" className="page">
-        <div>
+      <div id="wrapper" className="page">
+        <div style={{maxWidth: "1200px"}}>
           {children}
         </div>
       </div>

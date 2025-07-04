@@ -1,3 +1,6 @@
+@use "../libs/functions";
+@use "../libs/skel";
+
 ///
 /// Dimension by HTML5 UP
 /// html5up.net | @ajlkn
@@ -7,7 +10,7 @@
 /* BG */
 
 	#bg {
-		@include vendor('transform', 'scale(1.0)');
+		@include skel.vendor('transform', 'scale(1.0)');
 		-webkit-backface-visibility: hidden;
 		position: fixed;
 		top: 0;
@@ -27,8 +30,8 @@
 		}
 
 		&:before {
-			@include vendor('transition', 'background-color #{_duration(bg)} ease-in-out');
-			@include vendor('transition-delay', '#{_duration(intro)}');
+			@include skel.vendor('transition', 'background-color #{functions.duration(bg)} ease-in-out');
+			@include skel.vendor('transition-delay', '#{functions.duration(intro)}');
 			// background-image:		linear-gradient(to top, #{_palette(bg-overlay)}, #{_palette(bg-overlay)}),
 			// 						url('../../images/overlay.png');
 			background-size:		auto,
@@ -41,10 +44,10 @@
 		}
 
 		&:after {
-			@include vendor('transform', 'scale(1.125)');
-			@include vendor('transition', (
-				'transform #{_duration(article)} ease-in-out',
-				'filter #{_duration(article)} ease-in-out'
+			@include skel.vendor('transform', 'scale(1.125)');
+			@include skel.vendor('transition', (
+				'transform #{functions.duration(article)} ease-in-out',
+				'filter #{functions.duration(article)} ease-in-out'
 			));
 			// background-image:		url('../../images/bg.jpg');
 			background-position:	center;
@@ -55,14 +58,14 @@
 
 		.body.is-article-visible & {
 			&:after {
-				@include vendor('transform', 'scale(1.0825)');
-				@include vendor('filter', 'blur(0.2rem)');
+				@include skel.vendor('transform', 'scale(1.0825)');
+				@include skel.vendor('filter', 'blur(0.2rem)');
 			}
 		}
 
 		.body.is-loading & {
 			&:before {
-				background-color:	_palette(bg-alt);
+				background-color:	functions.palette(bg-alt);
 			}
 		}
 	}
