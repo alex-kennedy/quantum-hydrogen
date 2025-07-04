@@ -30,7 +30,7 @@ class Main extends React.Component {
             <h3>What is this?</h3>
             <p>This is a little tool to attempt to visualize the 'quantum states' of an electron orbiting a Hydrogen atom. </p>
 
-            <p>The states shown are derived from Quantum Physics. It is worthy of note that these 'shells', these 'shapes', are meager representations of the whole truth. In technical terms, they are surfaces of constant probability of finding the electron in that spot if its position were to be measured. Feel free to read the <Link to="/details">details page</Link> for a more complete picture! </p>
+            <p>In technical terms, these shapes are surfaces of constant probability of finding the electron in that spot if its position were to be measured. Feel free to read the <Link to="/details">details page</Link> for a more complete picture! </p>
 
             <ul>
               <li><MathJax.Node inline formula={'n'} /> is the 'principal quantum number,' it determines the energy of the state. <MathJax.Node inline formula={'n \\ge 1'} /> </li>
